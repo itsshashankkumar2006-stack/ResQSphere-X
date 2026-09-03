@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 
+// Your live production Render backend URL
+const API_BASE_URL = 'https://resqsphere-x.onrender.com';
+
 interface SOSAlert {
   id: string;
   lat: number;
@@ -43,7 +46,7 @@ export const useStore = create<StoreState>((set) => ({
 
   runAIAnalysis: async (report) => {
     try {
-      const res = await fetch('http://localhost:8000/api/ai/analyze', {
+      const res = await fetch(`${API_BASE_URL}/api/ai/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ report })
@@ -57,7 +60,7 @@ export const useStore = create<StoreState>((set) => ({
 
   broadcast: async (zoneId, severity) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/broadcast?zone_id=${zoneId}&severity=${severity}`, {
+      const res = await fetch(`${API_BASE_URL}/api/broadcast?zone_id=${zoneId}&severity=${severity}`, {
         method: 'POST'
       });
       const data = await res.json();
@@ -69,7 +72,7 @@ export const useStore = create<StoreState>((set) => ({
 
   calculateRoute: async (start, destination, blockedEdges = []) => {
     try {
-      const res = await fetch('http://localhost:8000/api/routes/calculate', {
+      const res = await fetch(`${API_BASE_URL}/api/routes/calculate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ start, destination, blocked_edges: blockedEdges })
@@ -83,7 +86,7 @@ export const useStore = create<StoreState>((set) => ({
 
   allocateShelter: async (peopleCount, shelterId) => {
     try {
-      const res = await fetch('http://localhost:8000/api/shelters/allocate', {
+      const res = await fetch(`${API_BASE_URL}/api/shelters/allocate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ people_count: peopleCount, shelter_id: shelterId })
@@ -97,7 +100,7 @@ export const useStore = create<StoreState>((set) => ({
 
   calculateEnergy: async (occupancy, solarKwh) => {
     try {
-      const res = await fetch('http://localhost:8000/api/energy/plan', {
+      const res = await fetch(`${API_BASE_URL}/api/energy/plan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ occupancy, solar_kwh: solarKwh })
@@ -111,7 +114,7 @@ export const useStore = create<StoreState>((set) => ({
 
   runScenario: async (scenarioType, parameters) => {
     try {
-      const res = await fetch('http://localhost:8000/api/simulation/run', {
+      const res = await fetch(`${API_BASE_URL}/api/simulation/run`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ scenario_type: scenarioType, parameters })
@@ -125,7 +128,7 @@ export const useStore = create<StoreState>((set) => ({
 
   fetchLiveWeather: async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/weather/live');
+      const res = await fetch(`${API_BASE_URL}/api/weather/live`);
       const data = await res.json();
       set({ weatherData: data });
     } catch (err) {
