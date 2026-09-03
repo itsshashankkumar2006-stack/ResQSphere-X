@@ -11,6 +11,7 @@ interface SOSAlert {
 }
 
 interface StoreState {
+  isAuthenticated: boolean;
   sosAlerts: SOSAlert[];
   aiInsight: any;
   activeRoute: string[] | null;
@@ -19,6 +20,7 @@ interface StoreState {
   simulationStatus: string | null;
   weatherData: any;
   
+  login: () => void;
   triggerSOS: (lat: number, lng: number, message: string) => void;
   runAIAnalysis: (report: string) => Promise<void>;
   broadcast: (zoneId: number, severity: string) => Promise<void>;
@@ -30,6 +32,7 @@ interface StoreState {
 }
 
 export const useStore = create<StoreState>((set) => ({
+  isAuthenticated: false,
   sosAlerts: [],
   aiInsight: null,
   activeRoute: null,
@@ -37,6 +40,8 @@ export const useStore = create<StoreState>((set) => ({
   energyPlan: null,
   simulationStatus: null,
   weatherData: null,
+
+  login: () => set({ isAuthenticated: true }),
 
   triggerSOS: (lat, lng, message) => {
     set((state) => ({
